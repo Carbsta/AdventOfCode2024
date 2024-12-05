@@ -13,7 +13,7 @@ readLists = splitOnPos . map readInt . words
 
 main :: IO ()
 main = do
-  contents <- readFile "day1data.txt"
+  contents <- readFile "input.txt"
   print ("Part 1, list distance: " ++ (show . listDist . readLists $ contents))
   print ("Part 2, list similarity: " ++ (show . listSim . readLists $ contents))
 
