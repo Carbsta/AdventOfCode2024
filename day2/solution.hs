@@ -1,5 +1,3 @@
-import Data.Sequence (chunksOf)
-
 readInt :: String -> Int
 readInt = read
 
@@ -38,3 +36,21 @@ main :: IO ()
 main = do
   contents <- readFile "input.txt"
   print ("Part 1, number of safe reports: " ++ show (countSafeReports $ readReports contents))
+  print ("Part 2, number of safe reports after dampening " ++ show (countSafeDampenedReports $ readReports contents))
+
+-- part 2 extension
+dropAt :: Int -> [a] -> [a]
+dropAt _ [] = []
+dropAt k (x : xs)
+  | k < 0 = x : xs
+  | k == 0 = xs
+  | otherwise = x : dropAt (k - 1) xs
+
+dropAll :: [a] -> [[a]]
+dropAll xs = map ((\f -> f xs) . dropAt) [0 .. length xs]
+
+isDampenedReportSafe :: [Int] -> Bool
+isDampenedReportSafe xs = any (arePairsSafe . pairs) (dropAll xs)
+
+countSafeDampenedReports :: [[Int]] -> Int
+countSafeDampenedReports = length . filter id . map isDampenedReportSafe
