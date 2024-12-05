@@ -8,11 +8,14 @@ splitOnPos :: [a] -> ([a], [a])
 splitOnPos (x : xs) = (x : evens, odds) where (odds, evens) = splitOnPos xs
 splitOnPos [] = ([], [])
 
+readLists :: String -> ([Int], [Int])
+readLists = splitOnPos . map readInt . words
+
 main :: IO ()
 main = do
   contents <- readFile "day1data.txt"
-  print . listDist . splitOnPos . map readInt . words $ contents
-  print . listSim . splitOnPos . map readInt . words $ contents
+  print ("Part 1, list distance: " ++ (show . listDist . readLists $ contents))
+  print ("Part 2, list similarity: " ++ (show . listSim . readLists $ contents))
 
 dist :: Int -> Int -> Int
 dist x y = abs (x - y)
